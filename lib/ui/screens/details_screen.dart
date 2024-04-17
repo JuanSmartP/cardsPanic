@@ -1,8 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
-
-
 String formatTime(Duration duration) {
   String twoDigits(int n) => n.toString().padLeft(2, '0');
   final hours = twoDigits(duration.inHours);
@@ -201,7 +199,8 @@ class CustomRow extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Text(text, style: const TextStyle(fontWeight: FontWeight.bold)),
+            child:
+                Text(text, style: const TextStyle(fontWeight: FontWeight.bold)),
           ),
           Text(
             arguments[argument],

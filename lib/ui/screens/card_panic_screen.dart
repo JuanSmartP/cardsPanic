@@ -39,12 +39,20 @@ class CustomCard extends StatelessWidget {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                child: Text(
-                  'Botones de panico',
-                  style: TextStyle(
-                      fontSize: 30,
-                      color: Colors.blue[600],
-                      fontWeight: FontWeight.bold),
+                child: Row(
+                  children: [
+                    Text(
+                      'Botones de panico',
+                      style: TextStyle(
+                          fontSize: 30,
+                          color: Colors.blue[600],
+                          fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Text('(${state.users.length.toString()})'),
+                  ],
                 ),
               ),
               CardBody(users: state.users),
@@ -63,12 +71,6 @@ class CustomCard extends StatelessWidget {
   }
 }
 
-Widget loadingData() {
-  return const Center(
-    child: CircularProgressIndicator(),
-  );
-}
-
 // https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3
 // 'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3'
 
@@ -78,9 +80,13 @@ class CardBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    final containerHeight = screenHeight * 0.78;
+
     List<Info> dataList = users;
     return SizedBox(
-      height: 600,
+      height: containerHeight,
       width: double.infinity,
       child: ListView.builder(
         itemCount: dataList.length,
@@ -108,23 +114,65 @@ class CardBody extends StatelessWidget {
                               color: Colors.blue),
                         ),
                         Expanded(
-                          flex: 500,
-                          child: IconButton(
-                            alignment: Alignment.bottomRight,
-                            onPressed: () {
-                              Navigator.pushNamed(context, 'details',
-                                  arguments: {
-                                    "ip": data.ipDispositivo,
-                                    "marca": data.marca,
-                                    "imei": data.imei,
-                                    "Codigo_postal": data.codigoPostal,
-                                    "audio": data.rutaAudio,
-                                    "tiene_audio": data.tieneAudio,
-                                    "latitud": data.latitud,
-                                    "longitud": data.longitud
-                                  });
-                            },
-                            icon: const Icon(Icons.more_vert_rounded),
+                          child: Tooltip(
+                            message: 'Mas informacion',
+                            child: IconButton(
+                              alignment: Alignment.bottomRight,
+                              onPressed: () {
+                                // Navigator.pushNamed(context, 'details',
+                                // arguments: {
+                                //   "ip": data.ipDispositivo,
+                                //   "marca": data.marca,
+                                //   "imei": data.imei,
+                                //   "Codigo_postal": data.codigoPostal,
+                                //   "audio": data.rutaAudio,
+                                //   "tiene_audio": data.tieneAudio,
+                                //   "latitud": data.latitud,
+                                //   "longitud": data.longitud
+                                // }
+
+                                // );
+
+                                showModalBottomSheet(
+                                  context: context,
+                                  builder: (context) {
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 30, vertical: 30),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const ListTile(
+                                            title: Text('Accion'),
+                                          ),
+                                          ListTile(
+                                            title: const Text('Mas detales'),
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                              Navigator.pushNamed(
+                                                  context, 'details',
+                                                  arguments: {
+                                                    "ip": data.ipDispositivo,
+                                                    "marca": data.marca,
+                                                    "imei": data.imei,
+                                                    "Codigo_postal":
+                                                        data.codigoPostal,
+                                                    "audio": data.rutaAudio,
+                                                    "tiene_audio":
+                                                        data.tieneAudio,
+                                                    "latitud": data.latitud,
+                                                    "longitud": data.longitud
+                                                  });
+                                            },
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                              icon: const Icon(Icons.more_vert_rounded),
+                            ),
                           ),
                         ),
                       ],
@@ -235,11 +283,23 @@ class CardBody extends StatelessWidget {
                               style: const TextStyle(fontSize: 12),
                             ),
                           ],
-                        )
+                        ),
                       ],
                     ),
                     const SizedBox(height: 5),
-                    const Divider(),
+                    Row(
+                      children: [
+                        const Text(
+                          'Estado:',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        Text(data.accion ?? 'No Info')
+                      ],
+                    )
                   ],
                 ),
               ),
@@ -249,4 +309,10 @@ class CardBody extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget loadingData() {
+  return const Center(
+    child: CircularProgressIndicator(),
+  );
 }
