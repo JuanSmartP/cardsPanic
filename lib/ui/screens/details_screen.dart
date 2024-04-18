@@ -1,5 +1,5 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 String formatTime(Duration duration) {
   String twoDigits(int n) => n.toString().padLeft(2, '0');

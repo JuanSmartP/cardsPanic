@@ -4,15 +4,20 @@ import 'package:widget_panic_button/models/panic_models.dart';
 import 'package:widget_panic_button/domain/bloc/card_bloc_bloc.dart';
 import 'package:widget_panic_button/domain/repositorie/repositoreies.dart';
 
+final _dataRepository = DataRepository();
+
 class CardPanicScren extends StatelessWidget {
   const CardPanicScren({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(),
       body: RepositoryProvider(
-          create: (context) => DataRepository(), child: const CustomCard()),
+        create: (context) => DataRepository(),
+        child: const CustomCard(),
+      ),
     );
   }
 }
@@ -142,8 +147,39 @@ class CardBody extends StatelessWidget {
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          const ListTile(
-                                            title: Text('Accion'),
+                                          ListTile(
+                                            title: Row(
+                                              children: [
+                                                const Text('Estado'),
+                                                const SizedBox(width: 40),
+                                                DropdownButton(
+                                                    items: const [
+                                                      DropdownMenuItem(
+                                                          value: 'EN_PROGRESO',
+                                                          child: Text(
+                                                              'En progreso')),
+                                                      DropdownMenuItem(
+                                                          value: 'RESUELTA',
+                                                          child:
+                                                              Text('Resuelta')),
+                                                      DropdownMenuItem(
+                                                          value: 'CERRADO',
+                                                          child:
+                                                              Text('Cerrado'))
+                                                    ],
+                                                    onChanged: (value) {
+                                                      final values = value;
+
+                                                      _dataRepository.sendState(
+                                                          data.pkPanico!,
+                                                          values!);
+
+                                                      print(values);
+
+                                                      print(data.pkPanico);
+                                                    })
+                                              ],
+                                            ),
                                           ),
                                           ListTile(
                                             title: const Text('Mas detales'),
