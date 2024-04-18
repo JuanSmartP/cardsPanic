@@ -11,6 +11,9 @@ class DataLoading extends CardBlocInitial {
 
 
 class DataLoaded extends CardBlocInitial {
+
+  
+
   DataLoaded(this.users);
 
   final List<Info> users;

@@ -169,7 +169,7 @@ class CustomButton extends StatelessWidget {
             await audioplayers.pause();
           } else {
             Source url = UrlSource(
-                ''
+                'https://www.bibloplus.com/~biblop/webservice/EndSubir/Grabaciones/${arguments['audio']}'
                 // data.rutaAudio!
                 );
             await audioplayers.play(url);

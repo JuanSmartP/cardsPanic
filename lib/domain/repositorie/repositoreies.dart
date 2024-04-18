@@ -7,9 +7,9 @@ import 'package:widget_panic_button/models/panic_models.dart';
 class DataRepository {
   Future<List<Info>> getPanicData() async {
 
-    // final urlTest = 'http://192.168.18.148/phps-api/EndSubir/actualizar-estado-alerta.php';
+  
  
-    final url =
+    const url =
         '';
 
     Response response =
@@ -21,8 +21,7 @@ class DataRepository {
   }
 
   Future<void> sendState(String consecutivo, String value) async {
-    
-    // final urlTest = 'http://192.168.18.148/phps-api/EndSubir/actualizar-estado-alerta.php';
+
  
     final url = Uri.parse(
         '');
@@ -36,3 +35,4 @@ class DataRepository {
     print(response.statusCode);
   }
 }
+

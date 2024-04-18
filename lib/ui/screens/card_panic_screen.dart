@@ -12,7 +12,7 @@ class CardPanicScren extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+    
       appBar: AppBar(),
       body: RepositoryProvider(
         create: (context) => DataRepository(),
@@ -85,6 +85,10 @@ class CardBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    getDataAgain() async {
+      BlocProvider.of<CardBlocBloc>(context).add(LoadData());
+    }
+
     final screenHeight = MediaQuery.of(context).size.height;
 
     final containerHeight = screenHeight * 0.78;
@@ -124,20 +128,6 @@ class CardBody extends StatelessWidget {
                             child: IconButton(
                               alignment: Alignment.bottomRight,
                               onPressed: () {
-                                // Navigator.pushNamed(context, 'details',
-                                // arguments: {
-                                //   "ip": data.ipDispositivo,
-                                //   "marca": data.marca,
-                                //   "imei": data.imei,
-                                //   "Codigo_postal": data.codigoPostal,
-                                //   "audio": data.rutaAudio,
-                                //   "tiene_audio": data.tieneAudio,
-                                //   "latitud": data.latitud,
-                                //   "longitud": data.longitud
-                                // }
-
-                                // );
-
                                 showModalBottomSheet(
                                   context: context,
                                   builder: (context) {
@@ -147,12 +137,16 @@ class CardBody extends StatelessWidget {
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
+                                          Text(data.pkPanico ?? 'No regisra',
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold)),
                                           ListTile(
                                             title: Row(
                                               children: [
                                                 const Text('Estado'),
                                                 const SizedBox(width: 40),
                                                 DropdownButton(
+                                                  hint: Text(data.accion!),
                                                     items: const [
                                                       DropdownMenuItem(
                                                           value: 'EN_PROGRESO',
@@ -167,16 +161,14 @@ class CardBody extends StatelessWidget {
                                                           child:
                                                               Text('Cerrado'))
                                                     ],
-                                                    onChanged: (value) {
-                                                      final values = value;
-
+                                                    onChanged: (value) async {
                                                       _dataRepository.sendState(
                                                           data.pkPanico!,
-                                                          values!);
+                                                          value!);
 
-                                                      print(values);
+                                                      Navigator.pop(context);
 
-                                                      print(data.pkPanico);
+                                                      await getDataAgain();
                                                     })
                                               ],
                                             ),
